@@ -16,7 +16,7 @@ export function VerifyEmail() {
     resetErrorMessage();
   }, [location.pathname]);
 
-  async function handleSignup(e) {
+  async function handleVerify(e) {
     e.preventDefault();
 
     try {
@@ -56,7 +56,7 @@ export function VerifyEmail() {
                 <button
                   disabled={isLoading}
                   className="bg-accentBlue w-full font-semibold py-3 mt-3 rounded-2xl text-sm cursor-pointer flex justify-center"
-                  onClick={handleSignup}
+                  onClick={handleVerify}
                 >
                   {isLoading ? (
                     <Oval

@@ -5,6 +5,8 @@ import VerifyEmail from "./pages/VerifyEmail.jsx";
 import { useAuthStore } from "./store/authStore.js";
 import { useEffect } from "react";
 import HomePage from "./pages/HomePage.jsx";
+import ForgotPassword from "./pages/forgotPassword.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, user } = useAuthStore();
@@ -29,14 +31,14 @@ const RedirectAuthenticatedUser = ({ children }) => {
 };
 
 function App() {
-  const { checkAuth, isAuthenticated, user } = useAuthStore();
+  const { isCheckingAuth, checkAuth, isAuthenticated, user } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
-  console.log("isAuthenticated", isAuthenticated);
-  console.log("isAuthenticated", user);
+  if (isCheckingAuth) return <div>Loading...</div>;
+
   return (
     <Routes>
       <Route
@@ -64,6 +66,8 @@ function App() {
         }
       />
       <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
     </Routes>
   );
 }
