@@ -2,9 +2,9 @@
   "name": "authpagemern",
   "version": "1.0.0",
   "description": "",
-  "main": "backend/server.js",
+  "main": "server/server.js",
   "scripts": {
-    "dev": "nodemon backend/server.js"
+    "dev": "nodemon server/server.js"
   },
   "keywords": [],
   "author": "",
