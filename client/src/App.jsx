@@ -5,7 +5,7 @@ import VerifyEmail from "./pages/VerifyEmail.jsx";
 import { useAuthStore } from "./store/authStore.js";
 import { useEffect } from "react";
 import HomePage from "./pages/HomePage.jsx";
-import ForgotPassword from "./pages/forgotPassword.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 
 const ProtectedRoute = ({ children }) => {
