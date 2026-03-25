@@ -65,14 +65,7 @@ function App() {
           </RedirectAuthenticatedUser>
         }
       />
-      <Route
-        path="/verify-email"
-        element={
-          <RedirectAuthenticatedUser>
-            <VerifyEmail />
-          </RedirectAuthenticatedUser>
-        }
-      />
+      <Route path="/verify-email" element={<VerifyEmail />} />
       <Route
         path="/forgot-password"
         element={
@@ -89,6 +82,8 @@ function App() {
           </RedirectAuthenticatedUser>
         }
       />
+
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
