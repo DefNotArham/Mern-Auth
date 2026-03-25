@@ -1,5 +1,5 @@
+// nodemailer.js
 import nodemailer from "nodemailer";
-
 import {
   VERIFICATION_EMAIL_TEMPLATE,
   ACCOUNT_VERIFIED_TEMPLATE,
@@ -7,119 +7,65 @@ import {
   PASSWORD_RESET_SUCCESS_TEMPLATE,
 } from "./emailTemplates.js";
 
+// Load environment variables
 const SENDER = process.env.SENDER;
 const APP_PASSWORD = process.env.APP_PASSWORD;
+const CLIENT_URL = process.env.CLIENT_URL; // e.g., "https://yourfrontend.onrender.com"
 
-export async function sendVerificationCode(verificationToken, email) {
+// Create a single transporter to reuse
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: SENDER,
+    pass: APP_PASSWORD,
+  },
+});
+
+// Generic send mail function
+async function sendMail({ to, subject, html }) {
   try {
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: SENDER,
-        pass: APP_PASSWORD,
-      },
-    });
-
-    const htmlContent = VERIFICATION_EMAIL_TEMPLATE.replace(
-      "{verificationCode}",
-      verificationToken,
-    );
-
     const info = await transporter.sendMail({
-      from: {
-        name: "Arham",
-        address: SENDER,
-      },
-      to: email,
-      subject: "Verify your account",
-      html: htmlContent,
+      from: { name: "Arham", address: SENDER },
+      to,
+      subject,
+      html,
     });
-    console.log(`Message sent: ${info.messageId}`);
+    console.log(`Email sent to ${to}: ${info.messageId}`);
   } catch (error) {
-    console.log(`Error senidng email: ${error}`);
+    console.error(`Error sending email to ${to}:`, error);
   }
 }
 
+// Send verification code email
+export async function sendVerificationCode(token, email) {
+  const html = VERIFICATION_EMAIL_TEMPLATE.replace(
+    "{verificationCode}",
+    `${CLIENT_URL}/verify-email/${token}`,
+  );
+  await sendMail({ to: email, subject: "Verify your account", html });
+}
+
+// Send account verified success email
 export async function sendVerificationSuccess(email) {
-  try {
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: SENDER,
-        pass: APP_PASSWORD,
-      },
-    });
-
-    const htmlContent = ACCOUNT_VERIFIED_TEMPLATE;
-
-    const info = await transporter.sendMail({
-      from: {
-        name: "Arham",
-        address: SENDER,
-      },
-      to: email,
-      subject: "Verification successfull",
-      html: htmlContent,
-    });
-    console.log(`Message sent: ${info.messageId}`);
-  } catch (error) {
-    console.log(`Error senidng email: ${error}`);
-  }
+  await sendMail({
+    to: email,
+    subject: "Account verified successfully",
+    html: ACCOUNT_VERIFIED_TEMPLATE,
+  });
 }
 
-export async function sendForgotPassword(email, resetUrl) {
-  try {
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: SENDER,
-        pass: APP_PASSWORD,
-      },
-    });
-
-    const htmlContent = PASSWORD_RESET_REQUEST_TEMPLATE.replace(
-      "{resetURL}",
-      resetUrl,
-    );
-
-    const info = await transporter.sendMail({
-      from: {
-        name: "Arham",
-        address: SENDER,
-      },
-      to: email,
-      subject: "Reset your password",
-      html: htmlContent,
-    });
-    console.log(`Message sent: ${info.messageId}`);
-  } catch (error) {
-    console.log(`Error senidng email: ${error}`);
-  }
+// Send forgot password email
+export async function sendForgotPassword(email, token) {
+  const resetUrl = `${CLIENT_URL}/reset-password/${token}`;
+  const html = PASSWORD_RESET_REQUEST_TEMPLATE.replace("{resetURL}", resetUrl);
+  await sendMail({ to: email, subject: "Reset your password", html });
 }
 
+// Send password reset success email
 export async function sendResetPasswordSuccess(email) {
-  try {
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: SENDER,
-        pass: APP_PASSWORD,
-      },
-    });
-
-    const htmlContent = PASSWORD_RESET_SUCCESS_TEMPLATE;
-
-    const info = await transporter.sendMail({
-      from: {
-        name: "Arham",
-        address: SENDER,
-      },
-      to: email,
-      subject: "Password reseted successfully",
-      html: htmlContent,
-    });
-    console.log(`Message sent: ${info.messageId}`);
-  } catch (error) {
-    console.log(`Error senidng email: ${error}`);
-  }
+  await sendMail({
+    to: email,
+    subject: "Password reset successfully",
+    html: PASSWORD_RESET_SUCCESS_TEMPLATE,
+  });
 }
