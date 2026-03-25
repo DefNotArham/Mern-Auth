@@ -7,6 +7,8 @@ import { useLocation } from "react-router-dom";
 
 export function ResetPassword() {
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [localError, setLocalError] = useState("");
 
   const { resetPassword, error, isLoading, resetErrorMessage, successMessage } =
     useAuthStore();
@@ -15,13 +17,28 @@ export function ResetPassword() {
 
   useEffect(() => {
     resetErrorMessage();
+    setLocalError("");
   }, [location.pathname]);
 
   async function handleResetPassword(e) {
     e.preventDefault();
 
+    if (password !== confirmPassword) {
+      setLocalError("Password does not match");
+      return;
+    }
+
+    if (!password || !confirmPassword) {
+      setLocalError("All fields are required");
+      return;
+    }
+
+    setLocalError("");
+
+    const token = location.pathname.split("/reset-password/")[1];
+
     try {
-      await resetPassword(password);
+      await resetPassword(token, password);
     } catch (error) {
       console.log(error);
     }
@@ -49,11 +66,15 @@ export function ResetPassword() {
               placeholder="Confirm new password"
               className="bg-secondaryBg text-textMain placeholder:text-textMuted w-full p-3 rounded-2xl text-base"
               type="password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPassword}
             />
           </div>
-          {error && <p className="text-red-500 font-semibold mt-2">{error}</p>}
+          {(localError || error) && (
+            <p className="text-red-500 font-semibold mt-2">
+              {localError || error}
+            </p>
+          )}
           {successMessage && (
             <p className="text-emerald-500 font-semibold mt-2">
               {successMessage}

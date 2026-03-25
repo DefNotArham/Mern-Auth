@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import axios from "axios";
+import ResetPassword from "../pages/ResetPassword";
 
 const CLIENT_URL = "http://localhost:8000/api/auth";
 
@@ -140,6 +141,33 @@ export const useAuthStore = create((set) => ({
     } catch (error) {
       set({ error: error.response.data.message });
       console.log(error);
+    }
+  },
+  resetPassword: async (token, password) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axios.post(
+        `${CLIENT_URL}/reset-password/${token}`,
+        {
+          password,
+        },
+      );
+
+      set({
+        isLoading: false,
+        successMessage: "Password reset successfully",
+        user: response.data.user,
+        error: null,
+      });
+
+      return response.data;
+    } catch (error) {
+      set({
+        isLoading: false,
+        successMessage: null,
+        error: error.response?.data?.message || "Error resetting password",
+      });
+      throw error;
     }
   },
 }));

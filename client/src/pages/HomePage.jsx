@@ -36,29 +36,54 @@ function HomePage() {
               Email:{" "}
               <span className="text-white font-medium">{user.email}</span>
             </p>
+          </div>
+          <div className="border border-accentBlue/30 bg-secondaryBg p-7 rounded-2xl mt-5 w-full">
+            <h3 className="text-2xl font-semibold text-accentBlue mb-3">
+              Account activity
+            </h3>
 
-            <div className="w-full flex justify-center">
-              <button
-                onClick={handleLogout}
-                disabled={isLoading}
-                className="cursor-pointer bg-red-500 hover:bg-red-600 transition w-full px-4 py-2 rounded-xl text-sm font-semibold mt-5 mx-auto"
-              >
-                {isLoading ? (
-                  <Oval
-                    height={21}
-                    width={21}
-                    color="#ffff"
-                    visible={true}
-                    ariaLabel="oval-loading"
-                    secondaryColor="#ffff"
-                    strokeWidth={2}
-                    strokeWidthSecondary={2}
-                  />
-                ) : (
-                  "Log out"
-                )}
-              </button>
-            </div>
+            <p className="text-textMain">
+              Joined:{" "}
+              <span className="text-white font-medium">
+                {" "}
+                {new Date(user.createdAt).toLocaleString("en-US", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })}
+              </span>
+            </p>
+
+            <p className="text-textMain">
+              Last Login:{" "}
+              <span className="text-white font-medium">
+                {new Date(user.lastLogin).toLocaleString("en-US", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })}
+              </span>
+            </p>
+          </div>
+          <div className="w-full flex justify-center">
+            <button
+              onClick={handleLogout}
+              disabled={isLoading}
+              className="cursor-pointer bg-red-500 hover:bg-red-600 transition w-full px-4 py-2 rounded-xl text-sm font-semibold mt-5 mx-auto"
+            >
+              {isLoading ? (
+                <Oval
+                  height={21}
+                  width={21}
+                  color="#ffff"
+                  visible={true}
+                  ariaLabel="oval-loading"
+                  secondaryColor="#ffff"
+                  strokeWidth={2}
+                  strokeWidthSecondary={2}
+                />
+              ) : (
+                "Log out"
+              )}
+            </button>
           </div>
         </div>
       </div>

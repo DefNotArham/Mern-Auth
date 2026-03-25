@@ -17,7 +17,7 @@ const resetPasswordController = async (req, res) => {
         message: "Invalid token or expired token",
       });
 
-    const samePassword = await bcrypt.compare(password, User.password);
+    const samePassword = await bcrypt.compare(password, user.password);
     if (samePassword)
       return res.status(400).json({
         success: false,
