@@ -1,6 +1,6 @@
 import User from "../model/user.model.js";
 import bcrypt from "bcryptjs";
-import { sendResetPasswordSuccess } from "../mail/nodemailer.js";
+import { sendResetPasswordSuccess } from "../mail/resend.js";
 
 const resetPasswordController = async (req, res) => {
   const { token } = req.params;
