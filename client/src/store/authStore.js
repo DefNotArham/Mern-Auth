@@ -5,7 +5,7 @@ import ResetPassword from "../pages/ResetPassword";
 const API_URL =
   import.meta.env.MODE === "development"
     ? "http://localhost:8000/api/auth"
-    : "api/auth";
+    : "https://mern-auth-il2k.onrender.com/api/auth";
 
 axios.defaults.withCredentials = true;
 
@@ -161,6 +161,7 @@ export const useAuthStore = create((set) => ({
 
       return response.data;
     } catch (error) {
+      console.log(error);
       set({
         isLoading: false,
         successMessage: null,
