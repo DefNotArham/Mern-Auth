@@ -1,5 +1,5 @@
 import User from "../model/user.model.js";
-import { sendVerificationSuccess } from "../mail/nodemailer.js";
+import { sendVerificationSuccess } from "../mail/resend.js";
 
 const verifyEmailController = async (req, res) => {
   const { code } = req.body;

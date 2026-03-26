@@ -1,6 +1,6 @@
 import User from "../model/user.model.js";
 import crypto from "crypto";
-import { sendForgotPassword } from "../mail/nodemailer.js";
+import { sendForgotPassword } from "../mail/resend.js";
 import checkEmailFormat from "../utils/checkEmailFormat.js";
 
 const forgotPasswordController = async (req, res) => {
