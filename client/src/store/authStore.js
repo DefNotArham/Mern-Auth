@@ -156,7 +156,6 @@ export const useAuthStore = create((set) => ({
       set({
         isLoading: false,
         successMessage: "Password reset successfully",
-        user: response.data.user,
         error: null,
       });
 

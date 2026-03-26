@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/authStore.js";
 import { Oval } from "react-loader-spinner";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export function ResetPassword() {
   const [password, setPassword] = useState("");
@@ -13,12 +13,12 @@ export function ResetPassword() {
   const { resetPassword, error, isLoading, resetErrorMessage, successMessage } =
     useAuthStore();
 
-  const location = useLocation();
+  const { token } = useParams();
 
   useEffect(() => {
     resetErrorMessage();
     setLocalError("");
-  }, [location.pathname]);
+  }, []);
 
   async function handleResetPassword(e) {
     e.preventDefault();
@@ -34,8 +34,6 @@ export function ResetPassword() {
     }
 
     setLocalError("");
-
-    const token = location.pathname.split("/reset-password/")[1];
 
     try {
       await resetPassword(token, password);
