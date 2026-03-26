@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import User from "../model/user.model.js";
 import checkEmailFormat from "../utils/checkEmailFormat.js";
 import generateCookieAndToken from "../utils/generateCookieAndToken.js";
-import { sendVerificationCode } from "../mail/resend.js";
+import { sendVerificationCode } from "../mail/nodemailer.js";
 
 const signupController = async (req, res) => {
   const { email, password, name } = req.body;
